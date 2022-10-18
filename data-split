@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 data = pd.read_csv('clean_invehicle_dataset2.csv')
+data.drop(data.iloc[:,:1], axis=1, inplace=True)
 train, test = train_test_split(data, test_size=0.20)
 
 train.to_csv(r'in-vehicle-train.csv', index= False,header= True)
