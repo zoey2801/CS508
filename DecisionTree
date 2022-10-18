@@ -4,7 +4,7 @@ from IPython.display import Image, display
 
 from sklearn import tree
 
-data = pd.read_csv('in-vehicle-test.csv')
+data = pd.read_csv('in-vehicle-train.csv')
 X_train = data.iloc[:,:-1]
 y_train = data.iloc[:,-1]
 
@@ -19,7 +19,7 @@ import seaborn as sns
 import numpy as np
 cols = ['age', 'gender', 'income', 'weather', 'Y']
 correlation_coefficient = np.corrcoef(data[cols].values.T)
-print(correlation_coefficient)
+#print(correlation_coefficient)
 
 sns.heatmap(correlation_coefficient, annot=True, yticklabels = cols, xticklabels=cols)
 plt.show()
