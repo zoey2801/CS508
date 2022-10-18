@@ -1,0 +1,58 @@
+
+from sklearn import tree
+
+data = pd.read_csv('in-vehicle-test.csv')
+X_train = data.iloc[:,:-1]
+y_train = data.iloc[:,-1]
+
+y = data['Y']
+X = data.iloc[:,:-1]
+
+r = np.corrcoef(data['age'],data['Y'])
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import numpy as np
+cols = ['age', 'gender', 'income', 'weather', 'Y']
+correlation_coefficient = np.corrcoef(data[cols].values.T)
+print(correlation_coefficient)
+
+sns.heatmap(correlation_coefficient, annot=True, yticklabels = cols, xticklabels=cols)
+plt.show()
+
+
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
+
+classifier_dt = DecisionTreeClassifier()
+
+steps = [
+    #('scalar', StandardScaler()),
+    ('model', DecisionTreeClassifier())
+]
+dt_pipe = Pipeline(steps)
+parameters = [ { "model__max_depth": np.arange(1,21),
+                 "model__min_samples_leaf": [1, 5, 10, 20, 50, 100],
+                 "model__min_samples_split": np.arange(2, 11),
+                 "model__criterion": ["gini"],
+                 "model__random_state" : [42]}
+            ]
+classifier_dt = GridSearchCV(estimator = dt_pipe,
+                           param_grid  = parameters,
+                           cv = 3,
+                           n_jobs = -1)
+
+classifier_dt = classifier_dt.fit(X_train, y_train.ravel())
+
+y_pred_dt_train = classifier_dt.predict(X_train)
+accuracy_dt_train = accuracy_score(y_train, y_pred_dt_train)
+print("Training set: ", accuracy_dt_train)
+
+
+
+
+
