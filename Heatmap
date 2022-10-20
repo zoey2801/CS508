@@ -1,0 +1,19 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+data = pd.read_csv('clean_invehicle_dataset2.csv')
+df = pd.DataFrame(data)
+print('Attributes: ')
+print(data.info())
+print('Number of rows: ', len(data))
+
+X = df[['destination', 'passanger', 'weather', 'time', 'coupon', 'expiration','gender', 'maritalStatus', 'education',
+            'occupation', 'income']]
+y = df.iloc[:, -1]
+
+colormap = plt.cm.viridis
+plt.figure(figsize=(12,12))
+plt.title('Pearson Correlation of Features', y=1.05, size=15)
+sns.heatmap(X.astype(int).corr(),linewidths=0.1,vmax=1.0, square=True, cmap=colormap, linecolor='white', annot=True)
+plt.show()
